@@ -1,15 +1,24 @@
 import {Stream} from 'xstream';
 
+declare var window: any;
+
+function getGlobal(): any {
+  if(typeof window !== undefined) {
+    return window;
+  }
+  return global;
+}
+
 export interface AdaptStream {
   (s: Stream<any>): any;
 }
 
-let adaptStream: AdaptStream = x => x;
+getGlobal().adaptStream = (x => x) as AdaptStream;
 
 export function setAdapt(f: AdaptStream): void {
-  adaptStream = f;
+  getGlobal().adaptStream = f;
 }
 
 export function adapt(stream: Stream<any>): any {
-  return adaptStream(stream);
+  return getGlobal().adaptStream(stream);
 }

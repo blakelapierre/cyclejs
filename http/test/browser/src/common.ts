@@ -4,7 +4,7 @@ import {
   RequestInput,
   Response,
   ResponseStream,
-} from '../../../lib/index';
+} from '../../../lib/cjs/index';
 import {HTTPSource} from '../../../rxjs-typings';
 import * as Rx from 'rxjs';
 import {Observable} from 'rxjs';
@@ -179,7 +179,10 @@ export function run(uri: string) {
       response$$.subscribe(function(response$) {
         assert.strictEqual(response$.request.url, uri + '/pet');
         assert.strictEqual(response$.request.method, 'POST');
-        assert.strictEqual((response$.request.send as string), 'name=Woof&species=Dog');
+        assert.strictEqual(
+          response$.request.send as string,
+          'name=Woof&species=Dog',
+        );
         response$.subscribe(function(response) {
           assert.strictEqual(response.status, 200);
           assert.strictEqual(response.text, 'added Woof the Dog');
